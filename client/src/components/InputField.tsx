@@ -1,4 +1,4 @@
-interface Props {
+interface InputProps {
   value: string;
   label?: string;
   id: string;
@@ -6,7 +6,7 @@ interface Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputField: React.FC<Props> = ({
+const InputField: React.FC<InputProps> = ({
   value,
   id,
   label,

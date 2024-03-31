@@ -1,6 +1,7 @@
 import { useState } from "react";
 import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
+import Button from "./Button";
 
 interface BlogFormState {
   title: string;
@@ -20,6 +21,14 @@ const BlogForm = () => {
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setBlog({ ...blog, [fieldName]: e.target.value });
     };
+
+  const handleSave = () => {
+    console.log(blog);
+  };
+
+  const handleCancel = () => {
+    // cancel code
+  };
 
   return (
     <div className="">
@@ -43,6 +52,10 @@ const BlogForm = () => {
         placeholder="Description"
         onChange={handleChange("description")}
       />
+      <div className="flex justify-end gap-4 mt-2">
+        <Button label="Cancel" type="outline" onClick={handleCancel} />
+        <Button label="Save" onClick={handleSave} />
+      </div>
     </div>
   );
 };
