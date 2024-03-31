@@ -29,7 +29,6 @@ class BlogController extends BaseController {
       });
     } catch (error) {
       super.setLogger('info', error);
-      // console.log('log =================================>', error);
     }
   }
 

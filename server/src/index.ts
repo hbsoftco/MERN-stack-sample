@@ -3,6 +3,8 @@ import express, { json, urlencoded } from 'express';
 import RouterManager from '@src/routes';
 import { serve, setup } from 'swagger-ui-express';
 import morgan from 'morgan';
+import { ConnectOptions } from 'mongoose';
+import Database from '@src/config/db.config';
 
 class Server {
   private app: express.Application;
@@ -15,6 +17,17 @@ class Server {
 
     this.initializeMiddlewares();
     this.initializeRoutes();
+    this.connectToDatabase();
+  }
+
+  private connectToDatabase(): void {
+    const uri = process.env.MONGO_URL;
+    const options: ConnectOptions = {
+      // add your options here if needed
+    };
+
+    const db = Database.getInstance(uri!, options);
+    db.connect();
   }
 
   private initializeMiddlewares(): void {
