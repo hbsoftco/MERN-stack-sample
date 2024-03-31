@@ -1,7 +1,5 @@
 const Home = () => {
-    return (
-      <div>Home page MERN stack blog application</div>
-    );
-  };
-  
-  export default Home;
+  return <h1 className="text-3xl font-bold underline text-center">Hello world!</h1>;
+};
+
+export default Home;
