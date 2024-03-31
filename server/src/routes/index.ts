@@ -2,6 +2,7 @@ import { Application, Router } from 'express';
 import userRouter from '@src/routes/user.routes';
 import userV2Router from '@src/routes/user.v2.routes';
 import bookRoutes from '@src/routes/book.routes';
+import blogRoutes from '@src/routes/blog.routes';
 
 class RouterManager {
   static initializeRoutes(app: Application): void {
@@ -11,6 +12,7 @@ class RouterManager {
     // v1 routes
     v1Router.use('/users', userRouter.router);
     v1Router.use('/books', bookRoutes.router);
+    v1Router.use('/blogs', blogRoutes.router);
 
     // v2 routes
     v2Router.use('/users', userV2Router.router);

@@ -1,8 +1,8 @@
 import { config } from 'dotenv-safe';
 import express, { json, urlencoded } from 'express';
 import RouterManager from '@src/routes';
-import morgan from 'morgan';
 import { serve, setup } from 'swagger-ui-express';
+import morgan from 'morgan';
 
 class Server {
   private app: express.Application;
