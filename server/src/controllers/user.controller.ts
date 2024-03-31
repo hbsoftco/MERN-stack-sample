@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
+import { Get, Route } from '@tsoa/runtime';
 
+@Route('users')
 class UserController {
-  static getAllUsers(req: Request, res: Response): void {
+  @Get('/')
+  static async getAllUsers(req: Request, res: Response): Promise<void> {
     // Fake data for demonstration
     const users = [
       { id: 1, name: 'User 1' },

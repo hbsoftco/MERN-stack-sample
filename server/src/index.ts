@@ -2,6 +2,7 @@ import { config } from 'dotenv-safe';
 import express, { json, urlencoded } from 'express';
 import RouterManager from '@src/routes';
 import morgan from 'morgan';
+import { serve, setup } from 'swagger-ui-express';
 
 class Server {
   private app: express.Application;
@@ -20,6 +21,15 @@ class Server {
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
     this.app.use(morgan('tiny'));
+    this.app.use(
+      '/api/docs',
+      serve,
+      setup(undefined, {
+        swaggerOptions: {
+          url: '/swagger.json',
+        },
+      }),
+    );
   }
 
   private initializeRoutes(): void {
