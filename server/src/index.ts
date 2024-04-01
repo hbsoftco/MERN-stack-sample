@@ -5,6 +5,7 @@ import { serve, setup } from 'swagger-ui-express';
 import morgan from 'morgan';
 import { ConnectOptions } from 'mongoose';
 import Database from '@src/config/db.config';
+import cors from 'cors';
 
 class Server {
   private app: express.Application;
@@ -31,6 +32,7 @@ class Server {
   }
 
   private initializeMiddlewares(): void {
+    this.app.use(cors());
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
     this.app.use(morgan('tiny'));

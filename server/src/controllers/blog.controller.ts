@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { Blog } from '@src/models/blog.model';
+import { IBlog } from '@src/interfaces/IBlog';
 import BaseController from './controller';
 
 class BlogController extends BaseController {
@@ -6,7 +8,19 @@ class BlogController extends BaseController {
     super();
   }
 
-  static getAllBlogs(req: Request, res: Response): void {
+  // Add new Blog
+  static async addBlog(req: Request, res: Response): Promise<void> {
+    try {
+      const blog = new Blog<IBlog>(req.body);
+      await blog.save();
+
+      res.status(201).json({ message: 'added successfully' });
+    } catch (error) {
+      res.status(400).json({ message: error });
+    }
+  }
+
+  static async getAllBlogs(req: Request, res: Response): Promise<void> {
     // Fake data for demonstration
     const books = [
       { id: 1, name: 'Book 1' },
@@ -14,7 +28,7 @@ class BlogController extends BaseController {
       { id: 3, name: 'Book 3' },
     ];
 
-    res.json(books);
+    await res.json(books);
   }
 
   static getBlog(req: Request, res: Response): void {
@@ -30,10 +44,6 @@ class BlogController extends BaseController {
     } catch (error) {
       super.setLogger('info', error);
     }
-  }
-
-  static addBlog(req: Request, res: Response): void {
-    res.json({ message: 'added successfully' });
   }
 
   static removeBlog(req: Request, res: Response): void {

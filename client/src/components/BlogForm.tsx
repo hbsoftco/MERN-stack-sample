@@ -2,6 +2,8 @@ import { useState } from "react";
 import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
 import Button from "./Button";
+import toast from "react-hot-toast";
+import { client } from "../api/client";
 
 interface BlogFormState {
   title: string;
@@ -22,8 +24,13 @@ const BlogForm = () => {
       setBlog({ ...blog, [fieldName]: e.target.value });
     };
 
-  const handleSave = () => {
-    console.log(blog);
+  const handleSave = async () => {
+    try {
+      const res = await client.post("/v1/blogs", blog);
+      toast.success(res.data.message);
+    } catch (error: unknown) {
+      toast.error((error as Error).message);
+    }
   };
 
   const handleCancel = () => {
