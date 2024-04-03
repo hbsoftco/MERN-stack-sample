@@ -14,32 +14,34 @@ class BlogController extends BaseController {
       const blog = new Blog<IBlog>(req.body);
       await blog.save();
 
-      res.status(201).json({ message: 'added successfully' });
+      res.status(201).json({ message: 'Added successfully' });
     } catch (error) {
-      res.status(400).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 
+  // Get all blogs
   static async getAllBlogs(req: Request, res: Response): Promise<void> {
-    // Fake data for demonstration
-    const books = [
-      { id: 1, name: 'Book 1' },
-      { id: 2, name: 'Book 2' },
-      { id: 3, name: 'Book 3' },
-    ];
+    try {
+      const blogs = await Blog.find();
 
-    await res.json(books);
+      res.status(201).json({
+        message: 'All Blogs',
+        data: blogs,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
   }
 
-  static getBlog(req: Request, res: Response): void {
+  // Get blog detail
+  static async getBlog(req: Request, res: Response): Promise<void> {
     try {
       const blogId = req.params.id;
-      // Fake data for demonstration
-      const book = { id: 1, name: 'Book 1' };
-      super.setLogger('info', 'book');
-      res.json({
-        book,
-        blogId,
+      const blog = await Blog.findById(blogId);
+      res.status(201).json({
+        message: 'Blog detail',
+        data: blog,
       });
     } catch (error) {
       super.setLogger('info', error);

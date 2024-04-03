@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 
-type ButtonType = "primary" | "outline";
-
+type ButtonType = "primary" | "outline" | "danger"; 
 interface ButtonProps {
   children?: ReactNode;
   label: string;
@@ -17,10 +16,15 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   type = "primary",
 }) => {
-  const buttonClass =
-    type === "primary"
-      ? "bg-blue-500 hover:bg-blue-600 text-white"
-      : "bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-50";
+  let buttonClass;
+
+  if (type === "primary") {
+    buttonClass = "bg-blue-500 hover:bg-blue-600 text-white";
+  } else if (type === "outline") {
+    buttonClass = "bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-50";
+  } else if (type === "danger") {
+    buttonClass = "bg-red-500 hover:bg-red-600 text-white";
+  }
 
   return (
     <button
