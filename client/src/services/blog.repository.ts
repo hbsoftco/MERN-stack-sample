@@ -1,12 +1,6 @@
-
 import toast from "react-hot-toast";
 import axiosInstance from "../lib/axios.config";
-
-type Blog = {
-  title: string;
-  image: string;
-  description?: string;
-};
+import { Blog } from "../models/Blog";
 
 type IBlogRepository = {
   getAll: () => Promise<Blog[]>;
@@ -16,15 +10,15 @@ type IBlogRepository = {
 const BlogRepository: IBlogRepository = {
   getAll: async () => {
     try {
-      const response = await axiosInstance.get("/blogs");
-      return response.data;
+      const response = await axiosInstance.get("/v1/blogs");
+      return response.data.data;
     } catch (error) {
       toast.error((error as Error).message);
     }
   },
   create: async (blog: Blog) => {
     try {
-      await axiosInstance.post("/blogs", blog);
+      await axiosInstance.post("/v1/blogs", blog);
     } catch (error) {
       toast.error((error as Error).message);
     }

@@ -1,5 +1,47 @@
+import { useEffect, useState } from "react";
+import BlogRepository from "../../services/blog.repository";
+import toast from "react-hot-toast";
+import { Blog } from "../../models/Blog";
+import BlogCard from "../../components/BlogCard";
+import Button from "../../components/Button";
+import { useNavigate } from "react-router-dom";
+
 const Home = () => {
-  return <h1 className="text-3xl font-bold underline text-center">Hello world!</h1>;
+  const [loading, setLoading] = useState(false);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  const getData = async () => {
+    try {
+      setLoading(true);
+      console.log(loading);
+      const blogsData = await BlogRepository.getAll();
+
+      setLoading(false);
+      setBlogs(blogsData);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl font-bold text-gray-700">All Blogs</h1>
+        <Button label="Add Blog" onClick={() => navigate("/add-blog")} />
+      </div>
+      <div className="grid grid-cols-4 gap-5 mt-5">
+        {blogs.map((blog) => {
+          return <BlogCard blog={blog} key={blog._id} />;
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default Home;

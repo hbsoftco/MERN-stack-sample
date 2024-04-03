@@ -4,6 +4,7 @@ import TextAreaField from "./TextAreaField";
 import Button from "./Button";
 import toast from "react-hot-toast";
 import BlogRepository from "../services/blog.repository";
+import { useNavigate } from "react-router-dom";
 
 interface BlogFormState {
   title: string;
@@ -12,6 +13,8 @@ interface BlogFormState {
 }
 
 const BlogForm = () => {
+  const navigate = useNavigate();
+
   const [blog, setBlog] = useState<BlogFormState>({
     title: "",
     description: "",
@@ -28,13 +31,14 @@ const BlogForm = () => {
     try {
       await BlogRepository.create(blog);
       toast.success("Blog created successfully.");
+      navigate("/");
     } catch (error: unknown) {
       toast.error((error as Error).message);
     }
   };
 
   const handleCancel = () => {
-    // cancel code
+    navigate("/");
   };
 
   return (
