@@ -3,7 +3,7 @@ import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
 import Button from "./Button";
 import toast from "react-hot-toast";
-import { client } from "../api/client";
+import BlogRepository from "../services/blog.repository";
 
 interface BlogFormState {
   title: string;
@@ -26,8 +26,8 @@ const BlogForm = () => {
 
   const handleSave = async () => {
     try {
-      const res = await client.post("/v1/blogs", blog);
-      toast.success(res.data.message);
+      await BlogRepository.create(blog);
+      toast.success("Blog created successfully.");
     } catch (error: unknown) {
       toast.error((error as Error).message);
     }
