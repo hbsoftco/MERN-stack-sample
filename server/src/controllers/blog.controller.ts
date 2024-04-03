@@ -58,6 +58,7 @@ class BlogController extends BaseController {
     }
   }
 
+  // Remove blog
   static async removeBlog(req: Request, res: Response): Promise<void> {
     try {
       await Blog.findByIdAndDelete(req.params.id, req.body);

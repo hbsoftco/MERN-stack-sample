@@ -5,15 +5,17 @@ import { Blog } from "../../models/Blog";
 import BlogCard from "../../components/BlogCard";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
   const getData = async () => {
     try {
       setLoading(true);
-      console.log(loading);
       const blogsData = await BlogRepository.getAll();
 
       setLoading(false);
@@ -27,10 +29,9 @@ const Home = () => {
     getData();
   }, []);
 
-  const navigate = useNavigate();
-
   return (
     <div>
+      {loading && <Loader />}
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-700">All Blogs</h1>
         <Button label="Add Blog" onClick={() => navigate("/add-blog")} />

@@ -4,12 +4,12 @@ import { Blog } from "../../models/Blog";
 import BlogRepository from "../../services/blog.repository";
 import toast from "react-hot-toast";
 import BlogForm from "../../components/BlogForm";
+import Loader from "../../components/Loader";
 
 const EditBlog = () => {
   const [loading, setLoading] = useState(false);
   const [blog, setBlog] = useState<Blog>();
 
-  // const navigate = useNavigate();
   const { id } = useParams();
 
   const getData = async () => {
@@ -27,12 +27,14 @@ const EditBlog = () => {
     getData();
   }, []);
 
-  console.log(loading);
-  console.log(blog);
-
   return (
     <div>
-      <BlogForm blogData={blog!} />
+      {loading && <Loader />}
+      <h1 className="mb-2 text-xl font-semibold">Edit Blog</h1>
+      <hr />
+      <div className="mt-2">
+        <BlogForm blogData={blog!} />
+      </div>
     </div>
   );
 };

@@ -6,10 +6,12 @@ import toast from "react-hot-toast";
 import BlogRepository from "../services/blog.repository";
 import { useNavigate } from "react-router-dom";
 import { Blog } from "../models/Blog";
+import Loader from "./Loader";
 
 const BlogForm = ({ blogData }: { blogData?: Blog }) => {
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
   const [blog, setBlog] = useState<Blog>({
     title: "",
     description: "",
@@ -24,6 +26,7 @@ const BlogForm = ({ blogData }: { blogData?: Blog }) => {
 
   const handleSave = async () => {
     try {
+      setLoading(true);
       if (blogData) {
         await BlogRepository.update(blogData._id!, blog);
         toast.success("Blog updated successfully.");
@@ -35,6 +38,8 @@ const BlogForm = ({ blogData }: { blogData?: Blog }) => {
       navigate("/");
     } catch (error: unknown) {
       toast.error((error as Error).message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,6 +51,7 @@ const BlogForm = ({ blogData }: { blogData?: Blog }) => {
 
   return (
     <div className="">
+      {loading && <Loader />}
       <InputField
         label="Enter title"
         id="title"

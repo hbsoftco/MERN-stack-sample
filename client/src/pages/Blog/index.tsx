@@ -4,6 +4,7 @@ import BlogRepository from "../../services/blog.repository";
 import { Blog } from "../../models/Blog";
 import toast from "react-hot-toast";
 import Button from "../../components/Button";
+import Loader from "../../components/Loader";
 
 const BlogDetail = () => {
   const [loading, setLoading] = useState(false);
@@ -44,7 +45,7 @@ const BlogDetail = () => {
   return (
     <div className="flex flex-col gap-4">
       {loading ? (
-        "Loading ..."
+        <Loader />
       ) : (
         <>
           <div className="flex justify-between items-center">
