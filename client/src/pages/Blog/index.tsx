@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import BlogRepository from "../../services/blog.repository";
 import { Blog } from "../../models/Blog";
 import toast from "react-hot-toast";
 import Button from "../../components/Button";
-import { useNavigate } from "react-router-dom";
 
 const BlogDetail = () => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +16,20 @@ const BlogDetail = () => {
     try {
       setLoading(true);
       setBlog(await BlogRepository.getById(id!));
+    } catch (error) {
+      toast.error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await BlogRepository.delete(id!);
+      toast.success("Blog deleted successfully.");
+
+      navigate("/");
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
@@ -38,9 +51,17 @@ const BlogDetail = () => {
             <h1 className="text-xl font-bold">{blog?.title}</h1>
 
             <div className="flex gap-3">
-              <Button label="Cancel" type="outline" onClick={()=> navigate('/')} />
-              <Button label="Delete" type="danger" onClick={()=> navigate('')} />
-              <Button label="Edit" type="primary" onClick={()=> navigate('')} />
+              <Button
+                label="Back"
+                type="outline"
+                onClick={() => navigate("/")}
+              />
+              <Button label="Delete" type="danger" onClick={handleDelete} />
+              <Button
+                label="Edit"
+                type="primary"
+                onClick={() => navigate(`/edit-blog/${id}`)}
+              />
             </div>
           </div>
 

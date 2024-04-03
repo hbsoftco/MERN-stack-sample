@@ -14,6 +14,8 @@ class BookRouter {
     this.router.get('/', BlogController.getAllBlogs);
     // GET a blog by id
     this.router.get('/:id', BlogController.getBlog);
+    // PUT a blog by id
+    this.router.put('/:id', BlogController.editBlog);
     // POST add new blog
     this.router.post('/', BlogController.addBlog);
     // DELETE remove a blog

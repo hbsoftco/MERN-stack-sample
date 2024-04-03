@@ -1,21 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
 import Button from "./Button";
 import toast from "react-hot-toast";
 import BlogRepository from "../services/blog.repository";
 import { useNavigate } from "react-router-dom";
+import { Blog } from "../models/Blog";
 
-interface BlogFormState {
-  title: string;
-  description: string;
-  image: string;
-}
-
-const BlogForm = () => {
+const BlogForm = ({ blogData }: { blogData?: Blog }) => {
   const navigate = useNavigate();
 
-  const [blog, setBlog] = useState<BlogFormState>({
+  const [blog, setBlog] = useState<Blog>({
     title: "",
     description: "",
     image: "",
@@ -29,17 +24,25 @@ const BlogForm = () => {
 
   const handleSave = async () => {
     try {
-      await BlogRepository.create(blog);
-      toast.success("Blog created successfully.");
+      if (blogData) {
+        await BlogRepository.update(blogData._id!, blog);
+        toast.success("Blog updated successfully.");
+      } else {
+        await BlogRepository.create(blog);
+        toast.success("Blog created successfully.");
+      }
+
       navigate("/");
     } catch (error: unknown) {
       toast.error((error as Error).message);
     }
   };
 
-  const handleCancel = () => {
-    navigate("/");
-  };
+  useEffect(() => {
+    if (blogData) {
+      setBlog(blogData);
+    }
+  }, [blogData]);
 
   return (
     <div className="">
@@ -59,12 +62,12 @@ const BlogForm = () => {
       />
       <TextAreaField
         id="description"
-        value={blog.description}
+        value={blog.description ?? ""}
         placeholder="Description"
         onChange={handleChange("description")}
       />
       <div className="flex justify-end gap-4 mt-2">
-        <Button label="Cancel" type="outline" onClick={handleCancel} />
+        <Button label="Cancel" type="outline" onClick={() => navigate("/")} />
         <Button label="Save" onClick={handleSave} />
       </div>
     </div>

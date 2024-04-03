@@ -5,14 +5,15 @@ import { Blog } from "../models/Blog";
 type IBlogRepository = {
   getAll: () => Promise<Blog[]>;
   getById: (id: string) => Promise<Blog>;
+  delete: (id: string) => Promise<Blog>;
   create: (blog: Blog) => Promise<void>;
+  update: (id: string, blog: Blog) => Promise<void>;
 };
 
 const BlogRepository: IBlogRepository = {
   getAll: async () => {
     try {
-      const response = await axiosInstance.get("/v1/blogs");
-      return response.data.data;
+      return (await axiosInstance.get("/v1/blogs")).data.data;
     } catch (error) {
       toast.error((error as Error).message);
     }
@@ -24,9 +25,23 @@ const BlogRepository: IBlogRepository = {
       toast.error((error as Error).message);
     }
   },
+  delete: async (id: string) => {
+    try {
+      return (await axiosInstance.delete(`/v1/blogs/${id}`)).data.data;
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  },
   create: async (blog: Blog) => {
     try {
       await axiosInstance.post("/v1/blogs", blog);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  },
+  update: async (id: string, blog: Blog) => {
+    try {
+      await axiosInstance.put(`/v1/blogs/${id}`, blog);
     } catch (error) {
       toast.error((error as Error).message);
     }
