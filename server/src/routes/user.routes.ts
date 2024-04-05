@@ -14,6 +14,8 @@ class UserRouter {
     this.router.get('/', UserController.getAllUsers);
     // POST register a new user
     this.router.post('/register', UserController.registerUser);
+    // POST login user
+    this.router.post('/login', UserController.loginUser);
   }
 }
 
