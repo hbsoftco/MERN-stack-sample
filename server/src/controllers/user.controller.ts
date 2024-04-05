@@ -19,21 +19,7 @@ class UserController {
     }
   }
 
-  // Get all books
-  @Get('/')
-  static async getAllUsers(req: Request, res: Response): Promise<void> {
-    try {
-      const books = await User.find();
-
-      res.status(201).json({
-        message: 'All Users',
-        data: books,
-      });
-    } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
-    }
-  }
-
+  //  Login
   static async loginUser(req: Request, res: Response): Promise<void> {
     const { email, password } = req.body;
 
@@ -52,6 +38,21 @@ class UserController {
 
       // Return token
       res.status(200).json({ token });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  }
+
+  // Get all users
+  @Get('/')
+  static async getAllUsers(req: Request, res: Response): Promise<void> {
+    try {
+      const books = await User.find();
+
+      res.status(201).json({
+        message: 'All Users',
+        data: books,
+      });
     } catch (error) {
       res.status(500).json({ message: (error as Error).message });
     }

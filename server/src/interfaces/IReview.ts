@@ -5,4 +5,5 @@ export interface IReview extends Document {
   content: string;
   rating: number;
   bookId: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
 }

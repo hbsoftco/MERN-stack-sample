@@ -24,6 +24,11 @@ const reviewSchema = new Schema<IReview>(
       ref: 'Book',
       required: true,
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   { timestamps: true },
 );

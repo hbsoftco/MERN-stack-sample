@@ -3,6 +3,7 @@ import { Book } from '@src/models/book.model';
 import { IBook } from '@src/interfaces/IBook';
 import { Review } from '@src/models/book-review.model';
 import { IReview } from '@src/interfaces/IReview';
+import { AuthRequest } from '@src/interfaces/IAuthRequest';
 import BaseController from './controller';
 
 class BookController extends BaseController {
@@ -126,6 +127,7 @@ class BookController extends BaseController {
     }
   }
 
+  // Add new review
   static async addReview(req: Request, res: Response): Promise<void> {
     try {
       const reviewData = req.body;
@@ -136,6 +138,39 @@ class BookController extends BaseController {
       res.status(201).json({ message: 'Review added successfully' });
     } catch (error) {
       res.status(500).json({ message: (error as Error).message });
+    }
+  }
+
+  // Delete review
+  static async removeReview(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      // Extract the review ID from the request parameters
+      const reviewId = req.params.reviewId;
+
+      // Find the review in the database
+      const review = await Review.findById(reviewId);
+
+      // Check if the review exists
+      if (!review) {
+        res.status(404).json({ message: 'Review not found' });
+        return;
+      }
+
+      // Check if the user making the request is the owner of the review
+      const userId = req.userId;
+      if (!userId || review.userId.toString() !== userId) {
+        res.status(403).json({ message: 'You are not authorized to delete this review' });
+        return;
+      }
+
+      // If authorized, delete the review
+      await Review.findByIdAndDelete(reviewId);
+
+      // Respond with success message
+      res.status(200).json({ message: 'Review deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
   }
 

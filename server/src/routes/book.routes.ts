@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import BookController from '@src/controllers/book.controller';
+import AuthMiddleware from '@src/middlewares/auth.middleware';
 
 class BookRouter {
   public router: Router;
@@ -21,7 +22,7 @@ class BookRouter {
     // GET books based on title
     this.router.get('/title/:title', BookController.getBooksByTitle);
     // POST add new book
-    this.router.post('/', BookController.addBook);
+    this.router.post('/', AuthMiddleware.authenticateToken, BookController.addBook);
     // DELETE remove a book
     this.router.delete('/:id', BookController.removeBook);
 
@@ -29,7 +30,9 @@ class BookRouter {
     // GET book reviews
     this.router.get('/:id/reviews', BookController.getBookReviews);
     // POST add review for a book
-    this.router.post('/:id/reviews', BookController.addReview);
+    this.router.post('/reviews', AuthMiddleware.authenticateToken, BookController.addReview);
+    // DELETE remove a review
+    this.router.delete('/:reviewId/reviews', AuthMiddleware.authenticateToken, BookController.removeReview);
   }
 }
 
