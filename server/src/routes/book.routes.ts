@@ -19,7 +19,7 @@ class BookRouter {
     // GET book details based on author
     this.router.get('/author/:author', BookController.getBookByAuthor);
     // POST add new book
-    this.router.post('/:id', BookController.addBook);
+    this.router.post('/', BookController.addBook);
     // DELETE remove a book
     this.router.delete('/:id', BookController.removeBook);
   }

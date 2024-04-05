@@ -1,41 +1,57 @@
 import { Request, Response } from 'express';
+import { Book } from '@src/models/book.model';
+import { IBook } from '@src/interfaces/IBook';
 import BaseController from './controller';
 
 class BookController extends BaseController {
-  static async getAllBooks(req: Request, res: Response): Promise<void> {
-    // Fake data for demonstration
-    const books = [
-      { id: 1, name: 'Book 1' },
-      { id: 2, name: 'Book 2' },
-      { id: 3, name: 'Book 3' },
-    ];
-    res.json(books);
+  // Add new book
+  static async addBook(req: Request, res: Response): Promise<void> {
+    try {
+      const book = new Book<IBook>(req.body);
+      await book.save();
+
+      res.status(201).json({ message: 'Added successfully' });
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
   }
 
-  static getBook(req: Request, res: Response): void {
+  // Get all books
+  static async getAllBooks(req: Request, res: Response): Promise<void> {
+    try {
+      const books = await Book.find();
+
+      res.status(201).json({
+        message: 'All Books',
+        data: books,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  }
+
+  // Get book detail
+  static async getBook(req: Request, res: Response): Promise<void> {
     try {
       const bookId = req.params.id;
-      // Fake data for demonstration
-      const book = { id: 1, name: 'Book 1' };
-      super.setLogger('info', 'book');
-      res.json({
-        book,
-        bookId,
+      const book = await Book.findById(bookId);
+      res.status(201).json({
+        message: 'Book detail',
+        data: book,
       });
     } catch (error) {
       super.setLogger('info', error);
     }
   }
 
+  // Get book detail by isbn
   static async getBookByISBN(req: Request, res: Response): Promise<void> {
     try {
-      const isbn = req.params.isbn;
-      // Fake data for demonstration
-      const book = { id: 1, name: 'Book 1' };
-      super.setLogger('info', 'book');
-      res.json({
-        book,
-        isbn,
+      const isbn = req.params.id;
+      const book = await Book.findById(isbn);
+      res.status(201).json({
+        message: 'Book detail',
+        data: book,
       });
     } catch (error) {
       super.setLogger('info', error);
@@ -55,10 +71,6 @@ class BookController extends BaseController {
     } catch (error) {
       super.setLogger('info', error);
     }
-  }
-
-  static addBook(req: Request, res: Response): void {
-    res.json({ message: 'added successfully' });
   }
 
   static removeBook(req: Request, res: Response): void {
