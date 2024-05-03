@@ -1,4 +1,4 @@
-import { logger } from '@src/utils/logger';
+import { Logger } from '@src/utils/logger';
 import mongoose, { ConnectOptions, Mongoose } from 'mongoose';
 
 class Database {
@@ -6,6 +6,7 @@ class Database {
   private readonly uri: string;
   private readonly options: ConnectOptions;
   private connection: Mongoose;
+  logger = Logger.getInstance();
 
   private constructor(uri: string, options: ConnectOptions) {
     this.uri = uri;
@@ -24,8 +25,7 @@ class Database {
   public async connect(): Promise<void> {
     try {
       await this.connection.connect(this.uri, this.options);
-      logger.info('Connected to MongoDB');
-      console.log('Connected to MongoDB');
+      this.logger.info('Connected to MongoDB');
     } catch (error) {
       console.error('Error connecting to MongoDB:', error);
     }

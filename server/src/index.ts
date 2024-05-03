@@ -6,10 +6,13 @@ import morgan from 'morgan';
 import { ConnectOptions } from 'mongoose';
 import Database from '@src/config/db.config';
 import cors from 'cors';
+import { Logger } from './utils/logger';
 
 class Server {
   private app: express.Application;
   private port: string | number;
+
+  logger = Logger.getInstance();
 
   constructor(port: string | number) {
     config();
@@ -53,7 +56,7 @@ class Server {
 
   public listen(): void {
     this.app.listen(this.port, () => {
-      console.log(`Server is running on port ${this.port}`);
+      this.logger.info(`Server is running on port ${this.port}`);
     });
   }
 }

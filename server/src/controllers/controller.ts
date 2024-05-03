@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '@src/utils/logger';
+// import { logger } from '@src/utils/logger';
 import { Level } from 'pino';
 
 // Union Types
@@ -10,19 +10,21 @@ class BaseController {
     try {
       switch (type) {
         case 'info':
-          logger.info(value);
+          console.log(value);
+
+          // logger.info(value);
           break;
 
         case 'error':
-          logger.error(value);
+          // logger.error(value);
           break;
 
         case 'warn':
-          logger.warn(value);
+          // logger.warn(value);
           break;
 
         default:
-          logger.info(value);
+          // logger.info(value);
           break;
       }
     } catch (error) {
@@ -35,7 +37,7 @@ class BaseController {
       next();
     }
     console.error(`An error occurred: ${err.message}`);
-    logger.error('Hello, world!');
+    // logger.error('Hello, world!');
     res.status(500).json({ error: 'Internal Server Error' });
   }
 
